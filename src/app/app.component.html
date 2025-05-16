@@ -1,5 +1,22 @@
-<mat-toolbar color="primary">
-  <span>Test Toolbar</span>
-</mat-toolbar>
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer [opened]="true" class="sidenav" mode="side">
+    <div class="logo-container">
+      Platz für Logo
+    </div>
 
-<button mat-raised-button color="primary">Test Button</button>
+    <ul class="menu-items">
+      <li><mat-icon>fact_check</mat-icon>Dashboard</li>
+      <li><mat-icon>perm_identity</mat-icon>User</li>
+    </ul>
+  </mat-drawer>
+  <mat-drawer-content>
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <mat-icon class="menu" (click)="drawer.toggle()">menu</mat-icon>
+        <span>Simple CRM</span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </mat-drawer-content>
+
+  <router-outlet></router-outlet>
+</mat-drawer-container>
