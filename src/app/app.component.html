@@ -5,10 +5,19 @@
     </div>
 
     <ul class="menu-items">
-      <li><mat-icon>fact_check</mat-icon>Dashboard</li>
-      <li><mat-icon>perm_identity</mat-icon>User</li>
+      <li>
+        <a routerLink="/dashboard" routerLinkActive="active-menu-item">
+          <mat-icon>fact_check</mat-icon>Dashboard
+        </a>
+      </li>
+      <li>
+        <a routerLink="/user" routerLinkActive="active-menu-item">
+          <mat-icon>perm_identity</mat-icon>User
+        </a>
+      </li>
     </ul>
   </mat-drawer>
+
   <mat-drawer-content>
     <mat-toolbar color="primary">
       <mat-toolbar-row>
@@ -16,7 +25,9 @@
         <span>Simple CRM</span>
       </mat-toolbar-row>
     </mat-toolbar>
-  </mat-drawer-content>
 
-  <router-outlet></router-outlet>
+    <div class="router-container">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
 </mat-drawer-container>
