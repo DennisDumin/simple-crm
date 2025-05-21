@@ -11,7 +11,7 @@
 }
 
 .logo-container {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
     padding-left: 16px;
     padding-right: 16px;
     min-height: 56px;
@@ -38,12 +38,19 @@ mat-toolbar-row {
         align-items: center;
         cursor: pointer;
 
-        mat-icon {
-            margin-right: 16px;
-        }
+        a {
+            outline: none;
+            color: inherit;
+            text-decoration: none;
+            width: 100%;
 
-        &:hover {
-            background-color: rgba(0, 0, 0, 0.1);
+            mat-icon {
+                margin-right: 16px;
+            }
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.04);
+            }
         }
     }
 }
