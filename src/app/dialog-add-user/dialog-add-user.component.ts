@@ -1,5 +1,5 @@
-import { Component, NgModule, Injectable } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,7 +17,7 @@ import { Firestore, collection, addDoc } from '@angular/fire/firestore';
     MatInputModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    FormsModule,
+    FormsModule
   ],
   templateUrl: './dialog-add-user.component.html',
   styleUrl: './dialog-add-user.component.scss'
@@ -25,8 +25,15 @@ import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 export class DialogAddUserComponent {
   user = new User();
   birthDate!: Date;
+  private firestore: Firestore;
 
-  constructor(private firestore: Firestore) { }
+  constructor(
+    private dialogRef: MatDialogRef<DialogAddUserComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    // Firestore-Instanz aus den Dialog-Daten übernehmen
+    this.firestore = data.firestore;
+  }
 
   saveUser() {
     if (!this.birthDate) {
@@ -34,14 +41,22 @@ export class DialogAddUserComponent {
       return;
     }
 
+    // Daten vorbereiten und speichern
     this.user.birthDate = this.birthDate.getTime();
     const userData = this.user.toJSON();
 
-    const usersRef = collection(this.firestore, 'users');
-    addDoc(usersRef, userData).then(result => {
-      console.log('Adding user finished', result);
-    }).catch(error => {
-      console.error('Error adding user:', error);
-    });
+    try {
+      const usersRef = collection(this.firestore, 'users');
+      addDoc(usersRef, userData)
+        .then(result => {
+          console.log('Adding user finished', result);
+          this.dialogRef.close(result.id); 
+        })
+        .catch(error => {
+          console.error('Error adding user:', error);
+        });
+    } catch (error) {
+      console.error('Firestore access error:', error);
+    }
   }
 }

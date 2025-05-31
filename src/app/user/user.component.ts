@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogConfig } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,11 +24,25 @@ import { inject } from '@angular/core';
 })
 export class UserComponent {
   user = new User();
-  private firestore: Firestore = inject(Firestore);
+  private firestore = inject(Firestore);
 
   constructor(private dialog: MatDialog) { }
 
   openDialog() {
-    this.dialog.open(DialogAddUserComponent);
+    // Das ist der kritische Teil: Konfiguration mit dem Firestore weitergeben
+    const dialogConfig = new MatDialogConfig();
+    
+    // Explizit den Firestore-Dienst als Data-Objekt übergeben
+    dialogConfig.data = {
+      firestore: this.firestore
+    };
+    
+    // Dialog öffnen mit der Konfiguration
+    const dialogRef = this.dialog.open(DialogAddUserComponent, dialogConfig);
+    
+    // Optional: Dialog-Ergebnis verarbeiten
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed with result:', result);
+    });
   }
 }
